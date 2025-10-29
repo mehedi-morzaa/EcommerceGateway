@@ -1,4 +1,27 @@
+using EcommerceGateway.CORS;
+using EcommerceGateway.ServiceExtension;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+builder.Host.UseSerilog();
+
+// ========= Service DI =========
+builder.Services.AddDIServices();
+// ====== End ==========
+
+// ========= CORS =========
+builder.Services.ConfigureCors(builder.Configuration);
+// ====== End ==========
 
 // Add services to the container.
 
@@ -17,6 +40,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// CORS
+app.UseCors("MorzaaCorsPolicy");
 
 app.UseAuthorization();
 
