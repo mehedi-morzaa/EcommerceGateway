@@ -16,7 +16,7 @@ namespace EcommerceGateway.Controllers
 
         #region Product
 
-        [HttpGet("getall-by-categoryid")]
+        [HttpGet("product/getall-by-categoryid")]
         public async Task<ActionResult<ApiResponse<ProductVM>>> GetProductByCategoryId([FromQuery] long categoryId = 0)
         {
             var data = await _inventoryService.GetProductByCategoryId(categoryId);
@@ -36,7 +36,7 @@ namespace EcommerceGateway.Controllers
             return Ok(data);
         }
 
-        [HttpGet("by-id")]
+        [HttpGet("product/by-id")]
         public async Task<IActionResult> GetProductsById([FromQuery] long productVariantId)
         {
             var product = await _inventoryService.GetProductByVariantId(productVariantId);
@@ -45,7 +45,7 @@ namespace EcommerceGateway.Controllers
 
             return Ok(product);
         }
-        [HttpPost("by-ids")]
+        [HttpPost("product/by-ids")]
         public async Task<IActionResult> GetProductsByIds([FromBody] List<long> productVariantIds)
         {
             var products = await _inventoryService.GetProductByVariantIds(productVariantIds);
@@ -53,6 +53,16 @@ namespace EcommerceGateway.Controllers
             if (!products.Success) return StatusCode(products.StatusCode, products);
 
             return Ok(products);
+        }
+
+        [HttpGet("product/categories")]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var data = await _inventoryService.GetAllCategoriesWithProductCount();
+
+            if (!data.Success) return StatusCode(data.StatusCode, data);
+
+            return Ok(data);
         }
 
         #endregion 

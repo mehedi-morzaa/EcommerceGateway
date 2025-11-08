@@ -8,5 +8,7 @@ namespace EcommerceGateway.Services.Interfaces
         Task<ApiResponse<List<ProductVM>>> GetProductByBrandId(long brandId);
         Task<ApiResponse<List<ProductVM>>> GetProductByVariantIds(List<long> variantIds);
         Task<ApiResponse<ProductVM?>> GetProductByVariantId(long variantId);
+
+        Task<ApiResponse<List<ProductCategoryVM>>> GetAllCategoriesWithProductCount();
     }
 }

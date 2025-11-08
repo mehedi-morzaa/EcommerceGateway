@@ -14,7 +14,7 @@ namespace EcommerceGateway.Services
 
         public async Task<ApiResponse<List<ProductVM>>> GetProductByBrandId(long brandId)
         {
-            var response = await _httpClient.GetAsync($"api/product/getall-by-brandid?brandId={brandId}");
+            var response = await _httpClient.GetAsync($"api/ecommerce/product/getall-by-brandid?brandId={brandId}");
 
             
             if(!response.IsSuccessStatusCode)
@@ -28,7 +28,7 @@ namespace EcommerceGateway.Services
 
         public async Task<ApiResponse<List<ProductVM>>> GetProductByCategoryId(long categoryId)
         {
-            var response = await _httpClient.GetAsync($"api/product/getall-by-categoryid?categoryId={categoryId}");
+            var response = await _httpClient.GetAsync($"api/ecommerce/product/getall-by-categoryid?categoryId={categoryId}");
 
 
             if (!response.IsSuccessStatusCode)
@@ -42,7 +42,7 @@ namespace EcommerceGateway.Services
 
         public async Task<ApiResponse<ProductVM?>> GetProductByVariantId(long variantId)
         {
-            var response = await _httpClient.GetAsync($"api/product/by-id?productVariantId={variantId}");
+            var response = await _httpClient.GetAsync($"api/ecommerce/product/by-id?productVariantId={variantId}");
 
 
             if (!response.IsSuccessStatusCode)
@@ -56,7 +56,7 @@ namespace EcommerceGateway.Services
 
         public async Task<ApiResponse<List<ProductVM>>> GetProductByVariantIds(List<long> variantIds)
         {
-            var response = await _httpClient.PostAsJsonAsync($"api/product/by-ids",variantIds);
+            var response = await _httpClient.PostAsJsonAsync($"api/ecommerce/product/by-ids",variantIds);
 
 
             if (!response.IsSuccessStatusCode)
@@ -66,6 +66,21 @@ namespace EcommerceGateway.Services
             var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<ProductVM>>>();
 
             return result ?? ApiResponse<List<ProductVM>>.ErrorResponse("Invalid API response");
+        }
+
+
+        public async Task<ApiResponse<List<ProductCategoryVM>>> GetAllCategoriesWithProductCount()
+        {
+            var response = await _httpClient.GetAsync($"api/ecommerce/category");
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return ApiResponse<List<ProductCategoryVM>>.ErrorResponse($"Inventory API returnd error: {response.StatusCode}", (int)response.StatusCode);
+            }
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<ProductCategoryVM>>>();
+
+            return result ?? ApiResponse<List<ProductCategoryVM>>.ErrorResponse("Invalid API response");
         }
     }
 }
