@@ -65,6 +65,26 @@ namespace EcommerceGateway.Controllers
             return Ok(data);
         }
 
+        [HttpGet("product/brands/{categoryId:long}")]
+        public async Task<IActionResult> GetAllBrandsByCategoryId(long categoryId)
+        {
+            var data = await _inventoryService.GetAllBrandsByCategoryId(categoryId);
+
+            if (!data.Success) return StatusCode(data.StatusCode, data);
+
+            return Ok(data);
+        }
+
+        [HttpGet("product/categories/{brandId:long}")]
+        public async Task<IActionResult> GetAllCategoriesByBrandId(long brandId)
+        {
+            var data = await _inventoryService.GetAllCategoriesByBrandId(brandId);
+
+            if (!data.Success) return StatusCode(data.StatusCode, data);
+
+            return Ok(data);
+        }
+
         #endregion 
     }
 }

@@ -82,5 +82,33 @@ namespace EcommerceGateway.Services
 
             return result ?? ApiResponse<List<ProductCategoryVM>>.ErrorResponse("Invalid API response");
         }
+
+        public async Task<ApiResponse<List<ProductCategoryVM>>> GetAllCategoriesByBrandId(long brandId)
+        {
+            var response = await _httpClient.GetAsync($"api/ecommerce/category/{brandId}");
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return ApiResponse<List<ProductCategoryVM>>.ErrorResponse($"Inventory API returnd error: {response.StatusCode}", (int)response.StatusCode);
+            }
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<ProductCategoryVM>>>();
+
+            return result ?? ApiResponse<List<ProductCategoryVM>>.ErrorResponse("Invalid API response");
+        }
+
+        public async Task<ApiResponse<List<BrandVM>>> GetAllBrandsByCategoryId(long categoryId)
+        {
+            var response = await _httpClient.GetAsync($"api/ecommerce/brand/{categoryId}");
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return ApiResponse<List<BrandVM>>.ErrorResponse($"Inventory API returnd error: {response.StatusCode}", (int)response.StatusCode);
+            }
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<BrandVM>>>();
+
+            return result ?? ApiResponse<List<BrandVM>>.ErrorResponse("Invalid API response");
+        }
     }
 }
