@@ -65,6 +65,15 @@ namespace EcommerceGateway.Controllers
             return Ok(data);
         }
 
+        [HttpGet("product/brands")]
+        public async Task<IActionResult> GetAllBrandsWithProductCount()
+        {
+            var data = await _inventoryService.GetAllBrandsWithProductCount();
+
+            if (!data.Success) return StatusCode(data.StatusCode, data);
+
+            return Ok(data);
+        }
         [HttpGet("product/brands/{categoryId:long}")]
         public async Task<IActionResult> GetAllBrandsByCategoryId(long categoryId)
         {
@@ -84,6 +93,7 @@ namespace EcommerceGateway.Controllers
 
             return Ok(data);
         }
+
 
         #endregion 
     }
